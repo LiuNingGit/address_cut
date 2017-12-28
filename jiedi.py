@@ -40,9 +40,6 @@ class Tokenizer(object):
     # 维特比算法求大概率路径
     def viterbi(self, address):
         length = len(address)
-        # 带切分地址必须大于一个字符
-        if length == 0:
-            return
         V = []  # tabular
         path = {}
         temp_pro = {}
@@ -165,6 +162,9 @@ dt = Tokenizer()
 
 # 对输入的地址进行切分
 def cut(address):
+    # 带切分地址必须大于一个字符
+    if address is None or len(address) < 2:
+        return '', '', '', '', 0, [], {}
     dt.time_init()
     p, max_path = dt.viterbi(address)
     pro = ''
