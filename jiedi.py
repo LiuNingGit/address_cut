@@ -1,7 +1,18 @@
 """
 根据隐马尔科夫模型，进行切分地址
 其中隐层状态定义为：
-对于输入的字符串清洗：.strip().strip('\ufeff')
+    'pB':  # 省份的开始字
+    'pM':  # 省份的中间字
+    'pE':  # 省份的结尾字
+    'cB':  # 市的开始字
+    'cM':  # 市的中间字
+    'cE':  # 市的结尾字
+    'aB':  # 区的开始字
+    'aM':  # 区的中间字
+    'aE':  # 区的结尾字
+    'dB':  # 详细地址的开始字
+    'dM':  # 详细地址的中间字
+    'dE':  # 详细地址的结尾字
 """
 from common import load_cache, MIN_FLOAT
 import config
@@ -137,7 +148,7 @@ class Tokenizer(object):
     # 计算初始时刻至今的耗时
     def get_time_stamp(self):
         time_temp = datetime.datetime.now()
-        time_stamp = (time_temp - self.time).microseconds
+        time_stamp = (time_temp - self.time).microseconds / 1000000
         self.time = time_temp
         return time_stamp
 
@@ -197,7 +208,7 @@ if __name__ == '__main__':
     e_time = datetime.datetime.now()
     times_total = (e_time - s_time).seconds
     print('总共{}条数据，共耗时:{}秒，平均每条{}秒。'.format(index+1, times_total, times_total/(index+1)))
-    print({key: value/1000000 for key, value in time_takes_total.items()})
+    print({key: value for key, value in time_takes_total.items()})
     address_sample.to_excel(r'E:\project\poc\address_cut\data\df_test_hmm.xlsx')
 
     # adr = '青岛路6号  一楼厂房'
