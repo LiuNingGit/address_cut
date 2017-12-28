@@ -112,8 +112,11 @@ class Tokenizer(object):
                 k += 1
                 continue
             while i < len(col_name):
+                # 避免重复判断字符串是否被包含，优化匹配效率
+                area_set = set(filter_df[col_name[i]].values)
+                match_area_set = {a for a in area_set if add in a}
                 # 筛选出符合条件的子地址库
-                filter_temp = filter_df.loc[filter_df[col_name[i]].str.contains(add), :]
+                filter_temp = filter_df.loc[filter_df[col_name[i]].isin(match_area_set), :]
                 if len(filter_temp) > 0:
                     revise_addr_list[i] = add
                     filter_df = filter_temp
